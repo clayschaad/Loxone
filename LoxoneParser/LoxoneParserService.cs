@@ -1,4 +1,5 @@
 ﻿using LoxoneParser.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
@@ -10,6 +11,25 @@ namespace LoxoneParser
         {
             var loxoneConfig = Parse(filepath);
             return loxoneConfig;
+        }
+
+        public LoxoneRooms GetRoomsWithControls(LoxoneConfig loxoneConfig)
+        {
+            var loxoneRooms = new LoxoneRooms();
+            foreach (var room in loxoneConfig.Rooms)
+            {
+                var controls = loxoneConfig.Pages.SelectMany(p => p.Controls).Where(c => c.Room.Id == room.Id);
+                if (controls.Any())
+                {
+                    var roomWithControls = new RoomWithControls();
+                    roomWithControls.Id = room.Id;
+                    roomWithControls.Title = room.Title;
+                    roomWithControls.Controls = controls.ToList();
+                    loxoneRooms.Rooms.Add(roomWithControls);
+                }
+            }
+
+            return loxoneRooms;
         }
 
         private LoxoneConfig Parse(string filepath)
@@ -31,7 +51,6 @@ namespace LoxoneParser
             // Program pages
             foreach (XmlNode node in doc.SelectNodes("//C[@Type='Program']/C"))
             {
-                
                 var page = new Page();
                 page.Title = node.Attributes["Title"].Value;
 
@@ -44,8 +63,9 @@ namespace LoxoneParser
 
                     control.Id = lightNode.Attributes["U"].Value;
                     control.Title = lightNode.Attributes["Title"].Value;
+                    control.Room = ParseRoom(lightNode, loxoneConfig.Rooms);
 
-                    // Light Scenes LightscenesC
+                    // Light Scenes
                     var lightScenes = lightNode.SelectNodes("LightscenesC/LightsceneC");
                     foreach (XmlNode lightSceneNode in lightScenes)
                     {
@@ -54,24 +74,20 @@ namespace LoxoneParser
                         lightScene.Name = lightSceneNode.Attributes["Name"].Value;
                         lightScene.Id = control.LightScenes.Count();
                     }
-
-                    // Room
-                    var ioData = lightNode.SelectSingleNode("IoData");
-                    var roomId = ioData.Attributes["Pr"].Value;
-                    control.Room = loxoneConfig.Rooms.Single(r => r.Id == roomId);
-                    
                 }
 
                 // Jalousie
-                var storeNodes = node.SelectNodes("C[@Type='AutoJalousie']");
-                foreach (XmlNode storeNode in storeNodes)
+                var jalousieNodes = node.SelectNodes("C[@Type='AutoJalousie']");
+                foreach (XmlNode jalousieNode in jalousieNodes)
                 {
-                    if (storeNode != null)
+                    if (jalousieNode != null)
                     {
                         var control = new JalousieControl();
-                        control.Id = storeNode.Attributes["U"].Value;
-                        control.Title = storeNode.Attributes["Title"].Value;
                         page.Controls.Add(control);
+
+                        control.Id = jalousieNode.Attributes["U"].Value;
+                        control.Title = jalousieNode.Attributes["Title"].Value;
+                        control.Room = ParseRoom(jalousieNode, loxoneConfig.Rooms);
                     }
                 }
 
@@ -79,6 +95,13 @@ namespace LoxoneParser
             }
 
             return loxoneConfig;
+        }
+
+        private Room ParseRoom(XmlNode node, List<Room> rooms)
+        {
+            var ioData = node.SelectSingleNode("IoData");
+            var roomId = ioData.Attributes["Pr"].Value;
+            return rooms.Single(r => r.Id == roomId);
         }
     }
 }
