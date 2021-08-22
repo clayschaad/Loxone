@@ -7,5 +7,7 @@ namespace LoxoneParser.Model
         public List<Page> Pages { get; set; } = new List<Page>();
 
         public List<Room> Rooms { get; set; } = new List<Room>();
+
+        public List<Category> Categories { get; set; } = new List<Category>();
     }
 }

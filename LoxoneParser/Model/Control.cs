@@ -1,9 +1,11 @@
 ﻿namespace LoxoneParser.Model
 {
+    [System.Diagnostics.DebuggerDisplay("{Id}:{Name}")]
     public class Control
     {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public Room Room { get; set; }
+        public LoxoneId Id { get; set; }
+        public string Name { get; set; }
+        public LoxoneId RoomId { get; set; }
+        public LoxoneId CategoryId { get; set; }
     }
 }
