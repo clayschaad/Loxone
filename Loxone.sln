@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoxoneUI", "Loxone\LoxoneUI.csproj", "{CFE12A0E-A39A-4610-B2FC-AB478151F144}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoxoneParser", "LoxoneParser\LoxoneParser.csproj", "{5218F111-C493-4F20-8729-7771E859599A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoxoneConsole", "LoxoneConsole\LoxoneConsole.csproj", "{2E02204B-CD1C-4DB1-A481-57DBA7F08EC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoxoneApi", "LoxoneApi\LoxoneApi.csproj", "{D92CE3C1-02FF-46F1-B863-B1A92722D222}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFE12A0E-A39A-4610-B2FC-AB478151F144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE12A0E-A39A-4610-B2FC-AB478151F144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE12A0E-A39A-4610-B2FC-AB478151F144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE12A0E-A39A-4610-B2FC-AB478151F144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5218F111-C493-4F20-8729-7771E859599A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5218F111-C493-4F20-8729-7771E859599A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5218F111-C493-4F20-8729-7771E859599A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5218F111-C493-4F20-8729-7771E859599A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E02204B-CD1C-4DB1-A481-57DBA7F08EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E02204B-CD1C-4DB1-A481-57DBA7F08EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E02204B-CD1C-4DB1-A481-57DBA7F08EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E02204B-CD1C-4DB1-A481-57DBA7F08EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D92CE3C1-02FF-46F1-B863-B1A92722D222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D92CE3C1-02FF-46F1-B863-B1A92722D222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D92CE3C1-02FF-46F1-B863-B1A92722D222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D92CE3C1-02FF-46F1-B863-B1A92722D222}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFB9FC61-5C9C-4325-90C2-E963481E8AE6}
+	EndGlobalSection
+EndGlobal
