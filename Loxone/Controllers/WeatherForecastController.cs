@@ -1,10 +1,10 @@
 ﻿using LoxoneParser;
+using LoxoneUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Loxone.Controllers
 {
@@ -18,19 +18,15 @@ namespace Loxone.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> logger;
-        private readonly ILoxoneParserService loxoneParserService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, ILoxoneParserService loxoneParserService)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             this.logger = logger;
-            this.loxoneParserService = loxoneParserService;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            loxoneParserService.ParseLoxoneFile(@"D:\Documents\Loxone\Loxone Config\Projects\Wohnung Schaad Bannau.Loxone");
-
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
