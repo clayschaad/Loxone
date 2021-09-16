@@ -50,12 +50,19 @@ export class Loxone extends Component {
             {loxoneData.map(room =>
             <tr key={room.id}>
                 <td>{room.name}</td>
-                    <td>{room.controls.map(control =>
-                        <div key={control.id}>{control.name}
-                            <Button id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
-                            <Button id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
-                            <Button id={control.id} name="1" onClick={this.onClickLight}>Scene</Button>
-                        </div>
+                    <td>{room.controls.map(control => {
+                        if (control.category === "10a43348-001d-0d92-ffff1380bb3b14a9")
+                            return <div key={control.id}>{control.name}
+                                <Button id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
+                                <Button id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
+                            </div>
+                        else if (control.category === "10a43348-001d-0d8e-ffff1380bb3b14a9")
+                            return <div key={control.id}>{control.name}
+                                <Button id={control.id} name="1" onClick={this.onClickLight}>Scene</Button>
+                            </div>
+                        else
+                            return <div id={control.category} />
+                    }
                     )}</td>
             </tr>
           )}
