@@ -1,3 +1,4 @@
+using LoxoneApi;
 using LoxoneParser;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,7 @@ namespace Loxone
             services.AddControllersWithViews();
 
             services.AddScoped<ILoxoneParserService, LoxoneParserService>();
+            services.AddScoped<ILoxoneApiService, LoxoneApiService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

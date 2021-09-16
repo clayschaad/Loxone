@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoxoneApi\LoxoneApi.csproj" />
     <ProjectReference Include="..\LoxoneParser\LoxoneParser.csproj" />
   </ItemGroup>
 

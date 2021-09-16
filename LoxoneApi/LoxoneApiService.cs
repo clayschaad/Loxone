@@ -8,17 +8,28 @@ namespace LoxoneApi
 {
     public class LoxoneApiService : ILoxoneApiService
     {
-        private const string Host = "192.168.1.xx";
-        private const string Username = "xxx";
-        private const string Password = "xxx";
+        private const string Host = "";
+        private const string Username = "";
+        private const string Password = "";
 
         public async Task SetLight(string id, int sceneId)
         {
             var requestUrl = $"http://{Host}/dev/sps/io/{id}/{sceneId}";
+            var result = await DoGet(requestUrl);
+        }
+
+        public async Task SetJalousie(string id, string direction)
+        {
+            var requestUrl = $"http://{Host}/dev/sps/io/{id}/{direction}";
+            var result = await DoGet(requestUrl);
+        }
+
+        private async Task<HttpResponseMessage> DoGet(string requestUrl)
+        {
             using var client = new HttpClient();
             var authToken = Encoding.ASCII.GetBytes($"{Username}:{Password}");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authToken));
-            var result = await client.GetAsync(requestUrl);
+            return await client.GetAsync(requestUrl);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LoxoneUI.Models
 {
@@ -9,5 +7,14 @@ namespace LoxoneUI.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
+
+        public List<Control> Controls { get; set; }
+    }
+
+    public class Control
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
     }
 }
