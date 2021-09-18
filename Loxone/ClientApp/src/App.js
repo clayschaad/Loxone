@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Loxone } from './components/Loxone';
+import { Loxone2 } from './components/Loxone2';
 
 import './custom.css'
 
@@ -16,7 +17,7 @@ export default class App extends Component {
         <Route exact path='/' component={Loxone} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
-        <Route path='/loxone' component={Loxone} />
+        <Route path='/loxone' component={Loxone2} />
       </Layout>
     );
   }
