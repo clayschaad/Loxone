@@ -6,13 +6,13 @@ export class Loxone extends Component {
 
   constructor(props) {
     super(props);
-      this.state = { loxoneData: [], loading: true };
+      this.state = { loxoneRooms: null, loading: true };
       this.onClickJalousie = this.onClickJalousie.bind(this);
       this.onClickLight = this.onClickLight.bind(this);
   }
 
   componentDidMount() {
-      this.getLoxoneData();
+      this.getLoxoneRooms();
     }
 
     onClickJalousie(event) {
@@ -27,7 +27,7 @@ export class Loxone extends Component {
     }
 
     onClickLight(event) {
-        const data = { Id: event.target.id, Direction: event.target.name };
+        const data = { Id: event.target.id, SceneId: event.target.name};
         fetch('loxoneroom/light', {
             method: 'POST',
             headers: {
@@ -37,7 +37,7 @@ export class Loxone extends Component {
         });
     }
 
-    renderLoxoneTable(loxoneData) {
+    renderLoxoneTable(loxoneRooms) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -47,23 +47,26 @@ export class Loxone extends Component {
           </tr>
         </thead>
         <tbody>
-            {loxoneData.map(room =>
+            {loxoneRooms.rooms.map(room =>
             <tr key={room.id}>
                 <td>{room.name}</td>
-                    <td>{room.controls.map(control => {
-                        if (control.category === "10a43348-001d-0d92-ffff1380bb3b14a9")
+                    <td>
+                        {room.lightControls.map(control => {
+                            return <div key={control.id}>{control.name}
+                                {control.lightScenes.map(scene => {
+                                    return <Button id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+                                })}
+                            </div>
+                        })}
+
+                        {room.jalousieControls.map(control => {
                             return <div key={control.id}>{control.name}
                                 <Button id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
                                 <Button id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
                             </div>
-                        else if (control.category === "10a43348-001d-0d8e-ffff1380bb3b14a9")
-                            return <div key={control.id}>{control.name}
-                                <Button id={control.id} name="1" onClick={this.onClickLight}>Scene</Button>
-                            </div>
-                        else
-                            return <div id={control.category} />
-                    }
-                    )}</td>
+                        })}
+           
+                </td>
             </tr>
           )}
         </tbody>
@@ -74,7 +77,7 @@ export class Loxone extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-        : this.renderLoxoneTable(this.state.loxoneData);
+        : this.renderLoxoneTable(this.state.loxoneRooms);
 
     return (
       <div>
@@ -85,10 +88,10 @@ export class Loxone extends Component {
     );
   }
 
-  async getLoxoneData() {
+  async getLoxoneRooms() {
     const response = await fetch('loxoneroom');
-    const data = await response.json();
-    this.setState({ loxoneData: data, loading: false });
+      const data = await response.json();
+    this.setState({ loxoneRooms: data, loading: false });
     }
 
 }

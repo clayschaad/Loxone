@@ -1,10 +1,9 @@
 ﻿using LoxoneApi;
 using LoxoneParser;
+using LoxoneUI.Converter;
 using LoxoneUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Loxone.Controllers
 {
@@ -24,27 +23,16 @@ namespace Loxone.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<LoxoneRoom> Get()
+        public LoxoneRooms Get()
         {
             var loxoneConfig = loxoneParserService.ParseLoxoneFile(@"D:\Documents\Loxone\Loxone Config\Projects\Wohnung Schaad Bannau.Loxone");
-            var x = loxoneParserService.GetRoomsWithControls(loxoneConfig);
-            var rooms = x.Rooms.Select(r => new LoxoneRoom
-            {
-                Id = r.Id,
-                Name = r.Name,
-                Controls = r.Controls.Select(c => new Control
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Category = c.CategoryId
-                }).ToList()
-            });
+            var rooms = LoxoneUiConverter.GetRoomsWithControls(loxoneConfig);
             return rooms;
         }
 
         [HttpPost]
         [Route("light")]
-        public IActionResult ControlLight([FromBody] LightControl data)
+        public IActionResult ControlLight([FromBody] LightData data)
         {
             loxoneApiService.SetLight(data.Id, data.SceneId);
             return Ok();
@@ -52,7 +40,7 @@ namespace Loxone.Controllers
 
         [HttpPost]
         [Route("jalousie")]
-        public IActionResult ControlJalousie([FromBody] JalousieControl data)
+        public IActionResult ControlJalousie([FromBody] JalousieData data)
         {
             loxoneApiService.SetJalousie(data.Id, data.Direction);
             return Ok();

@@ -13,25 +13,6 @@ namespace LoxoneParser
             return loxoneConfig;
         }
 
-        public LoxoneRooms GetRoomsWithControls(LoxoneConfig loxoneConfig)
-        {
-            var loxoneRooms = new LoxoneRooms();
-            foreach (var room in loxoneConfig.Rooms)
-            {
-                var controls = loxoneConfig.Pages.SelectMany(p => p.Controls).Where(c => c.RoomId == room.Id);
-                if (controls.Any())
-                {
-                    var roomWithControls = new RoomWithControls();
-                    roomWithControls.Id = room.Id;
-                    roomWithControls.Name = room.Name;
-                    roomWithControls.Controls = controls.ToList();
-                    loxoneRooms.Rooms.Add(roomWithControls);
-                }
-            }
-
-            return loxoneRooms;
-        }
-
         private LoxoneConfig Parse(string filepath)
         {
             var doc = new XmlDocument();
