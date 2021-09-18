@@ -42,7 +42,7 @@ export class Loxone2 extends Component {
         return (
             <CardColumns>
                 {loxoneRooms.rooms.map(room =>
-                        <Card style={{ width: '35rem' }}>
+                    <Card style={{ width: '35rem' }}>
                             <CardHeader tag="h5">{room.name}</CardHeader>
 
                             {room.lightControls.map(control => {
@@ -51,7 +51,7 @@ export class Loxone2 extends Component {
                                         <CardSubtitle>{control.name}</CardSubtitle>
                                         <ButtonGroup>
                                             {control.lightScenes.map(scene => {
-                                                return <Button outline color="warning" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+                                                return <Button outline color="primary" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
                                             })}
                                         </ButtonGroup>
                                     </CardBody>);
@@ -80,7 +80,6 @@ export class Loxone2 extends Component {
 
     return (
       <div>
-        <h1>Loxone Smarthome</h1>
         {contents}
       </div>
     );
