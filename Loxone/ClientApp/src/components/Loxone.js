@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap';
 
 export class Loxone extends Component {
     static displayName = Loxone.name;
@@ -42,7 +42,7 @@ export class Loxone extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Room</th>
             <th>Controls</th>
           </tr>
         </thead>
@@ -50,22 +50,25 @@ export class Loxone extends Component {
             {loxoneRooms.rooms.map(room =>
             <tr key={room.id}>
                 <td>{room.name}</td>
-                    <td>
-                        {room.lightControls.map(control => {
-                            return <div key={control.id}>{control.name}
-                                {control.lightScenes.map(scene => {
-                                    return <Button id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
-                                })}
-                            </div>
-                        })}
+                <td>
+                    {room.lightControls.map(control => {
+                        return <div key={control.id}>{control.name}
+                            <ButtonGroup>
+                            {control.lightScenes.map(scene => {
+                                return <Button outline color="success" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+                            })}
+                            </ButtonGroup>
+                        </div>
+                    })}
 
-                        {room.jalousieControls.map(control => {
-                            return <div key={control.id}>{control.name}
-                                <Button id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
-                                <Button id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
-                            </div>
-                        })}
-           
+                    {room.jalousieControls.map(control => {
+                        return <div key={control.id}>{control.name}
+                            <ButtonGroup>
+                                <Button outline color="primary" id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
+                                <Button outline color="primary" id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
+                            </ButtonGroup>
+                        </div>
+                    })}
                 </td>
             </tr>
           )}
