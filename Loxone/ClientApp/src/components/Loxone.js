@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Button, ButtonGroup } from 'reactstrap';
+﻿import React, { Component } from 'react';
+import { Button, ButtonGroup, Table } from 'reactstrap';
 
 export class Loxone extends Component {
     static displayName = Loxone.name;
@@ -39,7 +39,7 @@ export class Loxone extends Component {
 
     renderLoxoneTable(loxoneRooms) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
+        <Table dark bordered>
         <thead>
           <tr>
             <th>Room</th>
@@ -55,7 +55,7 @@ export class Loxone extends Component {
                         return <div key={control.id}>{control.name}
                             <ButtonGroup>
                             {control.lightScenes.map(scene => {
-                                return <Button outline color="success" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+                                return <Button outline color="warning" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
                             })}
                             </ButtonGroup>
                         </div>
@@ -64,8 +64,8 @@ export class Loxone extends Component {
                     {room.jalousieControls.map(control => {
                         return <div key={control.id}>{control.name}
                             <ButtonGroup>
-                                <Button outline color="primary" id={control.id} name="up" onClick={this.onClickJalousie}>Up</Button>
-                                <Button outline color="primary" id={control.id} name="down" onClick={this.onClickJalousie}>Down</Button>
+                                <Button outline color="success" id={control.id} name="up" onClick={this.onClickJalousie}>▲</Button>
+                                <Button outline color="success" id={control.id} name="down" onClick={this.onClickJalousie}>▼</Button>
                             </ButtonGroup>
                         </div>
                     })}
@@ -73,7 +73,7 @@ export class Loxone extends Component {
             </tr>
           )}
         </tbody>
-      </table>
+      </Table>
     );
   }
 
