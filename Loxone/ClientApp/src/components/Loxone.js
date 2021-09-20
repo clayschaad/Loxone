@@ -1,22 +1,33 @@
-﻿import React, { Component } from 'react';
-import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid } from '@material-ui/core'
+import React, { useState, useEffect } from 'react';
+import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid, Select, FormControl } from '@material-ui/core'
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-export class Loxone extends Component {
-    static displayName = Loxone.name;
+export default function Loxone() {
 
-  constructor(props) {
-    super(props);
-      this.state = { loxoneRooms: null, loading: true };
-      this.onClickJalousie = this.onClickJalousie.bind(this);
-      this.onClickLight = this.onClickLight.bind(this);
-  }
+    const [state, setState] = useState(
+        {
+            loxoneRooms: [],
+            loading: true
+        }
+    );
 
-  componentDidMount() {
-      this.getLoxoneRooms();
-    }
+    useEffect(() => {
+        async function getLoxoneRooms() {
+            const response = await fetch('loxoneroom');
+            const data = await response.json();
+            setState({
+                ...state,
+                loxoneRooms: data,
+                loading: false
+            });
+        }
 
-    onClickJalousie(event) {
-        const data = { Id: event.currentTarget.id, Direction: event.currentTarget.name};
+        getLoxoneRooms().then();
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const onClickJalousie = (event) => {
+        const data = { Id: event.currentTarget.id, Direction: event.currentTarget.name };
         fetch('loxoneroom/jalousie', {
             method: 'POST',
             headers: {
@@ -26,8 +37,8 @@ export class Loxone extends Component {
         });
     }
 
-    onClickLight(event) {
-        const data = { Id: event.currentTarget.id, SceneId: event.currentTarget.name};
+    const lightSceneChanged = (event) => {
+        const data = { Id: event.target.id, SceneId: event.target.value };
         fetch('loxoneroom/light', {
             method: 'POST',
             headers: {
@@ -35,26 +46,29 @@ export class Loxone extends Component {
             },
             body: JSON.stringify(data)
         });
-    }
+    };
 
-    renderLoxoneTable(loxoneRooms) {
+    function renderLoxoneTable (loxoneRooms) {
         return (
             <Grid container spacing={3} direction="row">
-                
+
                 {loxoneRooms.rooms.map(room =>
-                    <Grid item xs={6}>
-                    <Card>
-                        <CardHeader title={room.name} />
-                        
+                    <Grid key={room.id} item xs={12} md={3} xl={3}>
+                        <Card variant="outlined">
+                            <CardHeader title={room.name} />
                             {room.lightControls.map(control => {
+                                
                                 return (
                                     <CardContent key={control.id}>
                                         <h5>{control.name}</h5>
-                                        <ButtonGroup>
-                                            {control.lightScenes.map(scene => {
-                                                return <Button id={control.id} name={scene.id} key={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
-                                            })}
-                                        </ButtonGroup>
+                                        <FormControl>
+                                            <Select native value={control.selectedSceneId ?? 0} onChange={lightSceneChanged} inputProps={{ id: control.id, name: control.id }}>
+                                                <option value={0}>-</option>
+                                                {control.lightScenes.map(scene => {
+                                                    return <option key={scene.id} value={scene.id}>{scene.name}</option>
+                                                })}
+                                            </Select>
+                                            </FormControl>
                                     </CardContent>);
                             })}
 
@@ -63,35 +77,26 @@ export class Loxone extends Component {
                                     <CardContent key={control.id}>
                                         <h5>{control.name}</h5>
                                         <ButtonGroup>
-                                            <Button id={control.id} name="up" onClick={this.onClickJalousie}>▲</Button>
-                                            <Button id={control.id} name="down" onClick={this.onClickJalousie}>▼</Button>
+                                            <Button color="primary" variant="contained" id={control.id} name="up" onClick={onClickJalousie}><ArrowDropUpIcon /></Button>
+                                            <Button color="primary" variant="contained" id={control.id} name="down" onClick={onClickJalousie}><ArrowDropDownIcon /></Button>
                                         </ButtonGroup>
                                     </CardContent>);
                             })}
                         </Card>
                     </Grid>
-                    )}
-                    
+                )}
+
             </Grid>
         );
-  }
-
-  render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-        : this.renderLoxoneTable(this.state.loxoneRooms);
-
-    return (
-      <div>
-        {contents}
-      </div>
-    );
-  }
-
-  async getLoxoneRooms() {
-    const response = await fetch('loxoneroom');
-      const data = await response.json();
-    this.setState({ loxoneRooms: data, loading: false });
     }
 
+    let contents = state.loading
+        ? <p><em>Loading...</em></p>
+        : renderLoxoneTable(state.loxoneRooms);
+
+    return (
+        <div>
+            {contents}
+        </div>
+    );
 }

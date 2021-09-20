@@ -3,13 +3,14 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
-import { Loxone } from './components/Loxone';
+import Loxone from './components/Loxone';
 
 import './custom.css'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles';
 
 // https://bareynol.github.io/mui-theme-creator/#Accordion
-const myDarkTheme = createMuiTheme({
+const myDarkTheme = createTheme({
     palette: {
         type: 'dark'
     },
