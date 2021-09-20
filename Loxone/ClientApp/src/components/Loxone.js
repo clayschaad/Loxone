@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Button, ButtonGroup, Table } from 'reactstrap';
+import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid } from '@material-ui/core'
 
 export class Loxone extends Component {
     static displayName = Loxone.name;
@@ -16,7 +16,7 @@ export class Loxone extends Component {
     }
 
     onClickJalousie(event) {
-        const data = { Id: event.target.id, Direction: event.target.name};
+        const data = { Id: event.currentTarget.id, Direction: event.currentTarget.name};
         fetch('loxoneroom/jalousie', {
             method: 'POST',
             headers: {
@@ -27,7 +27,7 @@ export class Loxone extends Component {
     }
 
     onClickLight(event) {
-        const data = { Id: event.target.id, SceneId: event.target.name};
+        const data = { Id: event.currentTarget.id, SceneId: event.currentTarget.name};
         fetch('loxoneroom/light', {
             method: 'POST',
             headers: {
@@ -38,43 +38,42 @@ export class Loxone extends Component {
     }
 
     renderLoxoneTable(loxoneRooms) {
-    return (
-        <Table dark bordered>
-        <thead>
-          <tr>
-            <th>Room</th>
-            <th>Controls</th>
-          </tr>
-        </thead>
-        <tbody>
-            {loxoneRooms.rooms.map(room =>
-            <tr key={room.id}>
-                <td>{room.name}</td>
-                <td>
-                    {room.lightControls.map(control => {
-                        return <div key={control.id}>{control.name}
-                            <ButtonGroup>
-                            {control.lightScenes.map(scene => {
-                                return <Button outline color="warning" id={control.id} name={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+        return (
+            <Grid container spacing={3} direction="row">
+                
+                {loxoneRooms.rooms.map(room =>
+                    <Grid item xs={6}>
+                    <Card>
+                        <CardHeader title={room.name} />
+                        
+                            {room.lightControls.map(control => {
+                                return (
+                                    <CardContent key={control.id}>
+                                        <h5>{control.name}</h5>
+                                        <ButtonGroup>
+                                            {control.lightScenes.map(scene => {
+                                                return <Button id={control.id} name={scene.id} key={scene.id} onClick={this.onClickLight}>{scene.name}</Button>
+                                            })}
+                                        </ButtonGroup>
+                                    </CardContent>);
                             })}
-                            </ButtonGroup>
-                        </div>
-                    })}
 
-                    {room.jalousieControls.map(control => {
-                        return <div key={control.id}>{control.name}
-                            <ButtonGroup>
-                                <Button outline color="success" id={control.id} name="up" onClick={this.onClickJalousie}>▲</Button>
-                                <Button outline color="success" id={control.id} name="down" onClick={this.onClickJalousie}>▼</Button>
-                            </ButtonGroup>
-                        </div>
-                    })}
-                </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
-    );
+                            {room.jalousieControls.map(control => {
+                                return (
+                                    <CardContent key={control.id}>
+                                        <h5>{control.name}</h5>
+                                        <ButtonGroup>
+                                            <Button id={control.id} name="up" onClick={this.onClickJalousie}>▲</Button>
+                                            <Button id={control.id} name="down" onClick={this.onClickJalousie}>▼</Button>
+                                        </ButtonGroup>
+                                    </CardContent>);
+                            })}
+                        </Card>
+                    </Grid>
+                    )}
+                    
+            </Grid>
+        );
   }
 
   render() {
@@ -84,8 +83,6 @@ export class Loxone extends Component {
 
     return (
       <div>
-        <h1 id="tabelLabel" >Loxone Config</h1>
-        <p>Test mit Loxone</p>
         {contents}
       </div>
     );
