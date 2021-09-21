@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NavMenu } from './NavMenu';
 import { Container } from '@material-ui/core'
 
 export class Layout extends Component {
@@ -8,7 +7,6 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <NavMenu />
         <Container maxWidth="xl">
           {this.props.children}
         </Container>

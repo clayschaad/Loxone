@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
 import Loxone from './components/Loxone';
 
 import './custom.css'
@@ -24,8 +22,6 @@ export default class App extends Component {
           <ThemeProvider theme={myDarkTheme}>
           <Layout>
             <Route exact path='/' component={Loxone} />
-            <Route path='/counter' component={Counter} />
-            <Route path='/fetch-data' component={FetchData} />
           </Layout>
         </ThemeProvider>
     );

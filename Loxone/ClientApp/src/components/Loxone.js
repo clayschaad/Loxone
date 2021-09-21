@@ -62,12 +62,12 @@ export default function Loxone() {
 
     function renderLoxoneTable (loxoneRooms) {
         return (
-            <Grid container spacing={3} direction="row">
+            <Grid container spacing={2} direction="row" justifyContent="flex-start" alignItems="stretch">
 
                 {loxoneRooms.rooms.map(room => {
                     var firstLightControl = room.lightControls.length > 0 ? room.lightControls[0] : null;
                     return (
-                    <Grid key={room.id} item xs={12} md={3} xl={3}>
+                     <Grid item key={room.id} xs={12} md={3} xl={3}>
                         <Card variant="outlined">
                             <CardHeader
                                 title={room.name}
