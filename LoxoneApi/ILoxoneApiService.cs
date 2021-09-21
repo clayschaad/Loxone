@@ -4,7 +4,7 @@ namespace LoxoneApi
 {
     public interface ILoxoneApiService
     {
-        Task SetLight(string id, int sceneId);
-        Task SetJalousie(string id, string direction);
+        Task SetLight(LoxoneOptions credentials, string id, int sceneId);
+        Task SetJalousie(LoxoneOptions credentials, string id, string direction);
     }
 }

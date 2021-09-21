@@ -3,6 +3,7 @@ using LoxoneParser;
 using LoxoneUI.Converter;
 using LoxoneUI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Loxone.Controllers
@@ -12,12 +13,14 @@ namespace Loxone.Controllers
     public class LoxoneRoomController : ControllerBase
     {
         private readonly ILogger<LoxoneRoomController> logger;
+        private readonly IConfiguration configuration;
         private readonly ILoxoneParserService loxoneParserService;
         private readonly ILoxoneApiService loxoneApiService;
 
-        public LoxoneRoomController(ILogger<LoxoneRoomController> logger, ILoxoneParserService loxoneParserService, ILoxoneApiService loxoneApiService)
+        public LoxoneRoomController(ILogger<LoxoneRoomController> logger, IConfiguration configuration, ILoxoneParserService loxoneParserService, ILoxoneApiService loxoneApiService)
         {
             this.logger = logger;
+            this.configuration = configuration;
             this.loxoneParserService = loxoneParserService;
             this.loxoneApiService = loxoneApiService;
         }
@@ -25,7 +28,8 @@ namespace Loxone.Controllers
         [HttpGet]
         public LoxoneRooms Get()
         {
-            var loxoneConfig = loxoneParserService.ParseLoxoneFile(@"D:\Documents\Loxone\Loxone Config\Projects\Wohnung Schaad Bannau.Loxone");
+            var file = ReadLoxoneOptions().ConfigFile;
+            var loxoneConfig = loxoneParserService.ParseLoxoneFile(file);
             var rooms = LoxoneUiConverter.GetRoomsWithControls(loxoneConfig);
             return rooms;
         }
@@ -34,7 +38,7 @@ namespace Loxone.Controllers
         [Route("light")]
         public IActionResult ControlLight([FromBody] LightData data)
         {
-            loxoneApiService.SetLight(data.Id, data.SceneId);
+            loxoneApiService.SetLight(ReadLoxoneOptions(), data.Id, data.SceneId);
             return Ok();
         }
 
@@ -42,8 +46,15 @@ namespace Loxone.Controllers
         [Route("jalousie")]
         public IActionResult ControlJalousie([FromBody] JalousieData data)
         {
-            loxoneApiService.SetJalousie(data.Id, data.Direction);
+            loxoneApiService.SetJalousie(ReadLoxoneOptions(), data.Id, data.Direction);
             return Ok();
+        }
+
+        private LoxoneOptions ReadLoxoneOptions()
+        {
+            var options = new LoxoneOptions();
+            configuration.GetSection(LoxoneOptions.Loxone).Bind(options);
+            return options;
         }
     }
 }
