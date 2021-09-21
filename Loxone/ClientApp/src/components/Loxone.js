@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid, Select, FormControl } from '@material-ui/core'
+import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid, Select, FormControl, IconButton } from '@material-ui/core'
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
 
 export default function Loxone() {
 
@@ -48,29 +49,45 @@ export default function Loxone() {
         });
     };
 
+    const onClickLightOut = (event) => {
+        const data = { Id: event.currentTarget.id, SceneId: 2 };
+        fetch('loxoneroom/light', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+    };
+
     function renderLoxoneTable (loxoneRooms) {
         return (
             <Grid container spacing={3} direction="row">
 
-                {loxoneRooms.rooms.map(room =>
+                {loxoneRooms.rooms.map(room => {
+                    var firstLightControl = room.lightControls.length > 0 ? room.lightControls[0] : null;
+                    return (
                     <Grid key={room.id} item xs={12} md={3} xl={3}>
                         <Card variant="outlined">
-                            <CardHeader title={room.name} />
-                            {room.lightControls.map(control => {
-                                
-                                return (
-                                    <CardContent key={control.id}>
-                                        <h5>{control.name}</h5>
-                                        <FormControl>
-                                            <Select native value={control.selectedSceneId ?? 0} onChange={lightSceneChanged} inputProps={{ id: control.id, name: control.id }}>
-                                                <option value={0}>-</option>
-                                                {control.lightScenes.map(scene => {
-                                                    return <option key={scene.id} value={scene.id}>{scene.name}</option>
-                                                })}
-                                            </Select>
-                                            </FormControl>
-                                    </CardContent>);
-                            })}
+                            <CardHeader
+                                title={room.name}
+                                action={
+                                    <IconButton color="secondary" id={firstLightControl.id} onClick={onClickLightOut}><EmojiObjectsOutlinedIcon /></IconButton>
+                                }
+                            />
+                                           
+                            <CardContent key={firstLightControl.id}>
+                                <h5>{firstLightControl.name}</h5>
+                                <FormControl>
+                                    <Select native value={firstLightControl.selectedSceneId ?? 0} onChange={lightSceneChanged} inputProps={{ id: firstLightControl.id, name: firstLightControl.id }}>
+                                        <option value={2}></option>
+                                        {firstLightControl.lightScenes.map(scene => {
+                                            return <option key={scene.id} value={scene.id}>{scene.name}</option>
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </CardContent>
+                     
 
                             {room.jalousieControls.map(control => {
                                 return (
@@ -84,7 +101,7 @@ export default function Loxone() {
                             })}
                         </Card>
                     </Grid>
-                )}
+                )})}
 
             </Grid>
         );
