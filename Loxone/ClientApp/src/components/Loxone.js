@@ -3,8 +3,21 @@ import { Button, ButtonGroup, Card, CardHeader, CardContent, Grid, Select, FormC
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+    card: {
+        margin: 5,
+        minWidth: 250,
+        //display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    }
+}))
 
 export default function Loxone() {
+
+    const classes = useStyles();
 
     const [state, setState] = useState(
         {
@@ -62,13 +75,11 @@ export default function Loxone() {
 
     function renderLoxoneTable (loxoneRooms) {
         return (
-            <Grid container spacing={2} direction="row" justifyContent="flex-start" alignItems="stretch">
-
+            <Grid container>
                 {loxoneRooms.rooms.map(room => {
                     var firstLightControl = room.lightControls.length > 0 ? room.lightControls[0] : null;
                     return (
-                     <Grid item key={room.id} xs={12} md={3} xl={3}>
-                        <Card variant="outlined">
+                        <Grid item component={Card} key={room.id} className={classes.card}>
                             <CardHeader
                                 title={room.name}
                                 action={
@@ -99,7 +110,6 @@ export default function Loxone() {
                                         </ButtonGroup>
                                     </CardContent>);
                             })}
-                        </Card>
                     </Grid>
                 )})}
 
