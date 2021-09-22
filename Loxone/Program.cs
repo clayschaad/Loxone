@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+using System.IO;
 namespace Loxone
 {
     public class Program
@@ -20,6 +14,10 @@ namespace Loxone
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    var host =  args.Length == 1 ? args[0] : "localhost";
+                    webBuilder.UseKestrel();
+                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                    webBuilder.UseUrls($"http://{host}:5010", $"https://{host}:5011");
                     webBuilder.UseStartup<Startup>();
                 });
     }
